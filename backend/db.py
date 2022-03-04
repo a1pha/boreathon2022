@@ -20,8 +20,8 @@ print(table.creation_date_time)
 table.put_item(
    Item={
         'ID': 1,
-	'account_number': 10000,
+	'account_number': '10000',
         'balance': 0,
-        'account_status': 'open',
+        'account_status': 1,
     }
 )
