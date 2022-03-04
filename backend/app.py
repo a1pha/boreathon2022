@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_dynamo import Dynamo
 import boto3
+from random import random
 
 # boto_sess = Session(
 #     region_name='us-east-1',
@@ -49,6 +50,8 @@ def openAccount():
     args = request.args
     firstname = args.get("firstName") 
     lastname = args.get("lastName") 
+
+    accountID = int(random.random()*1000)
 
 
     accountTable.put_item(
