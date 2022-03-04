@@ -39,10 +39,10 @@ def hello():
 def retrieveAccountDetails():
     args = request.args
     account_num = args.get("accountNumber") 
-    userTable.get_item(Key={'account_number' : str(account_num)})
+    response = userTable.get_item(Key={'account_number' : str(account_num)})
+    ret = {"firstName" : response['firstName'], "lastName" : response['lastName'], "id" : response['ID']}
 
-
-    return account_num
+    return ret
 
 
 @app.route('/api/CustomerAccount/OpenCustomerAccount', methods=['POST'])
@@ -79,7 +79,7 @@ def closeAccount():
     accountNo = args.get("accountNumber") 
     accountTable.delete_item(
     Key={
-        'account_Number': str(accountNo)
+        'account_number': str(accountNo)
     })
     userTable.delete_item(
     Key={
