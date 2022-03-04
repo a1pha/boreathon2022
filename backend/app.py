@@ -1,6 +1,5 @@
 from flask import Flask, request
 from flask_dynamo import Dynamo
-from boto3.session import Session()
 
 # boto_sess = Session(
 #     region_name='us-east-1',
@@ -21,6 +20,7 @@ def hello():
 
 @app.route('/api/CustomerAccount/GetCustomerAccountByAccountNumber', methods=['GET'])
 def retrieveAccountDetails():
+    return ""
 
 
 @app.route('/api/CustomerAccount/OpenCustomerAccount', methods=['POST'])
@@ -32,11 +32,13 @@ def openAccount():
     #     'last_name': 'Degges',
     #     'email': 'r@rdegges.com',
     # })
+    return ""
 
 
 @app.route('/api/CustomerAccount/CloseCustomerAccount', methods=['POST'])
 def closeAccount():
     req = request.json
+    return ""
 
 
 @app.route('/api/CustomerAccount/ApplyTransactionToCustomerAsync', methods=['POST'])
@@ -45,9 +47,12 @@ def applyTransaction():
 
     # Credit
     if req['transactionType'] == 1:
+        return ""
 
     # Debit
     if req['transactionType'] == 0:
+
+        return ""
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
