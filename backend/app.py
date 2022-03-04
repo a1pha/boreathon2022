@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_dynamo import Dynamo
+import boto3
 
 # boto_sess = Session(
 #     region_name='us-east-1',
@@ -23,6 +24,10 @@ transactionTable = dynamodb.Table('R3-Transaction')
 
 app = Flask(__name__)
 
+accountID = 1
+
+
+
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -32,27 +37,56 @@ def hello():
 @app.route('/api/CustomerAccount/GetCustomerAccountByAccountNumber', methods=['GET'])
 def retrieveAccountDetails():
     args = request.args
-    account_num = args.get("accountNumber")
-    
+    account_num = args.get("accountNumber") 
+    userTable.get_item{Key={'account_number' : str(account_num)}}
+
+
     return account_num
 
 
 @app.route('/api/CustomerAccount/OpenCustomerAccount', methods=['POST'])
 def openAccount():
-    # req = request.json
-    # dynamo.tables['R3-Account'].put_item(data={
-    #     'username': 'rdegges',
-    #     'first_name': 'Randall',
-    #     'last_name': 'Degges',
-    #     'email': 'r@rdegges.com',
-    # })
-    return ""
+    args = request.args
+    firstname = args.get("firstName") 
+    lastname = args.get("lastName") 
+
+
+    accountTable.put_item(
+   Item={
+        'ID': accountID,
+        'account_number': str(accountID),
+        'balance': 10000,
+        'account_status': 1,
+    })
+
+    userTable.put_item(
+   Item={
+        'ID': accountID,
+        'firstName': firstname,
+        'lastName': lastname,
+        'associated_account': accountID,
+    })
+    accountID += 1
+    return "Added user"
 
 
 @app.route('/api/CustomerAccount/CloseCustomerAccount', methods=['POST'])
 def closeAccount():
-    req = request.json
-    return ""
+    args = request.args
+    accountNo = args.get("accountNumber") 
+    accountTable.delete_item(
+    Key={
+        'account_Number': str(accountNo)
+    }
+    userTable.delete_item(
+    Key={
+        'associated_account': str(accountNo)
+    }
+)
+
+
+
+    return "Success"
 
 
 @app.route('/api/CustomerAccount/ApplyTransactionToCustomerAsync', methods=['POST'])
