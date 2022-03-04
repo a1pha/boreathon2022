@@ -69,8 +69,7 @@ def openAccount():
         'lastName': lastname,
         'associated_account': str(accountID)    ,
     })
-    accountID += 1
-    return "Added user "
+    return "Added user " + accountID
 
 
 @app.route('/api/CustomerAccount/CloseCustomerAccount', methods=['POST'])
@@ -94,14 +93,17 @@ def closeAccount():
 
 @app.route('/api/CustomerAccount/ApplyTransactionToCustomerAsync', methods=['POST'])
 def applyTransaction():
-    req = request.json 
-
+    args = request.args
+    accountNo = args.get("accountNumber") 
+    transAmount = args.get("transaction_amount")
+    transType = args.get("transaction_type")
+    
     # Credit
-    if req['transactionType'] == 1:
+    if transType == 1:
         return ""
 
     # Debit
-    if req['transactionType'] == 0:
+    if transType == 0:
 
         return ""
 
