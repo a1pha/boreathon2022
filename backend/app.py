@@ -39,7 +39,7 @@ def hello():
 def retrieveAccountDetails():
     args = request.args
     account_num = args.get("accountNumber") 
-    response = userTable.get_item(Key={'account_number' : str(account_num)})
+    response = userTable.get_item(Key={'associated_account' : str(account_num)})
     ret = {"firstName" : response['firstName'], "lastName" : response['lastName'], "id" : response['ID']}
 
     return ret
