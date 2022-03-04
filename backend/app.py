@@ -7,7 +7,18 @@ from flask_dynamo import Dynamo
 #     aws_secret_access_key='my_super_secret_key'
 # )
 # app.config['DYNAMO_SESSION'] = boto_sess
+AWS_ACCESS_KEY_ID = 'AKIAWLU3NUWTE3BD7VN6'
+AWS_SECRET_ACCESS_KEY = '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'
+REGION_NAME = 'us-east-2'
 
+dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
+         aws_secret_access_key= AWS_SECRET_ACCESS_KEY, region_name = REGION_NAME)
+
+accountTable = dynamodb.Table('R3-Account')
+
+userTable = dynamodb.Table('R3-Customer')
+
+transactionTable = dynamodb.Table('R3-Transaction')
 
 
 app = Flask(__name__)
@@ -20,7 +31,10 @@ def hello():
 
 @app.route('/api/CustomerAccount/GetCustomerAccountByAccountNumber', methods=['GET'])
 def retrieveAccountDetails():
-    return ""
+    args = request.args
+    account_num = args.get("accountNumber")
+    
+    return account_num
 
 
 @app.route('/api/CustomerAccount/OpenCustomerAccount', methods=['POST'])
