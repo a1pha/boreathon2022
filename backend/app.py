@@ -67,7 +67,7 @@ def openAccount():
         'ID': accountID,
         'firstName': firstname,
         'lastName': lastname,
-        'associated_account': accountID,
+        'associated_account': str(accountID)    ,
     })
     accountID += 1
     return "Added user"
