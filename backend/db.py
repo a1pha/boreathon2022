@@ -7,16 +7,37 @@ AWS_SECRET_ACCESS_KEY = ''
 
 app.config['DYNAMO_TABLES'] = [
     {
-         TableName:'users',
-         KeySchema:[dict(AttributeName='username', KeyType='HASH')],
-         AttributeDefinitions:[dict(AttributeName='username', AttributeType='S')],
+         TableName:'R3-Account',
+         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
+         AttributeDefinitions:[
+		dict(AttributeName='ID', AttributeType='N'),
+		dict(AttributeName='accountNum', AttributeType='S'),
+		dict(AttributeName='balance', AttributeType='N'),
+		dict(AttributeName='accountStatus', AttributeType='S')
+	 ],
          ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
     }, {
-         TableName:'groups',
-         KeySchema:[dict(AttributeName='name', KeyType='HASH')],
-         AttributeDefinitions:[dict(AttributeName='name', AttributeType='S')],
+         TableName:'R3-Customer',
+         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
+         AttributeDefinitions:[
+		dict(AttributeName='ID', AttributeType='N'),
+		dict(AttributeName='firstName', AttributeType='S'),
+		dict(AttributeName='lastName', AttributeType='S'),
+		dict(AttributeName='associatedAcc', AttributeType='S')
+	 ],
+         ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
+    }, {
+         TableName:'R3-Transaction',
+         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
+         AttributeDefinitions:[
+		dict(AttributeName='ID', AttributeType='N'),
+		dict(AttributeName='amount', AttributeType='N'),
+		dict(AttributeName='transactionType', AttributeType='S'),
+		dict(AttributeName='associatedAcc', AttributeType='S')
+	 ],
          ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
     }
+
  ]
 
 #create tables
