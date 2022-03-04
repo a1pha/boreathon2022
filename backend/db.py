@@ -1,45 +1,27 @@
 from flask import Flask
 from flask_dynamo import Dynamo
-from app.py import app #fix this import
+import app
+import boto3
 
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+AWS_ACCESS_KEY_ID = 'AKIAWLU3NUWTE3BD7VN6'
+AWS_SECRET_ACCESS_KEY = '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'
+REGION_NAME = 'us-east-2'
 
-app.config['DYNAMO_TABLES'] = [
-    {
-         TableName:'R3-Account',
-         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
-         AttributeDefinitions:[
-		dict(AttributeName='ID', AttributeType='N'),
-		dict(AttributeName='accountNum', AttributeType='S'),
-		dict(AttributeName='balance', AttributeType='N'),
-		dict(AttributeName='accountStatus', AttributeType='S')
-	 ],
-         ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
-    }, {
-         TableName:'R3-Customer',
-         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
-         AttributeDefinitions:[
-		dict(AttributeName='ID', AttributeType='N'),
-		dict(AttributeName='firstName', AttributeType='S'),
-		dict(AttributeName='lastName', AttributeType='S'),
-		dict(AttributeName='associatedAcc', AttributeType='S')
-	 ],
-         ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
-    }, {
-         TableName:'R3-Transaction',
-         KeySchema:[dict(AttributeName='ID', KeyType='HASH')],
-         AttributeDefinitions:[
-		dict(AttributeName='ID', AttributeType='N'),
-		dict(AttributeName='amount', AttributeType='N'),
-		dict(AttributeName='transactionType', AttributeType='S'),
-		dict(AttributeName='associatedAcc', AttributeType='S')
-	 ],
-         ProvisionedThroughput:dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
+dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
+         aws_secret_access_key= AWS_SECRET_ACCESS_KEY, region_name = REGION_NAME)
+
+table = dynamodb.Table('R3-Account')
+
+# Print out some data about the table.
+print(table.item_count)
+print(table.creation_date_time)
+
+# Insert dummy data
+table.put_item(
+   Item={
+        'ID': 1,
+	'account_num': '10000',
+        'balance': 0,
+        'account_status': 'open',
     }
-
- ]
-
-#create tables
-#with app.app_context():
-#    dynamo.create_all()
+)
