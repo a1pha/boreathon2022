@@ -38,7 +38,7 @@ def hello():
 def retrieveAccountDetails():
     args = request.args
     account_num = args.get("accountNumber") 
-    userTable.get_item{Key={'account_number' : str(account_num)}}
+    userTable.get_item(Key={'account_number' : str(account_num)})
 
 
     return account_num
@@ -77,7 +77,7 @@ def closeAccount():
     accountTable.delete_item(
     Key={
         'account_Number': str(accountNo)
-    }
+    })
     userTable.delete_item(
     Key={
         'associated_account': str(accountNo)
