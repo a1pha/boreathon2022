@@ -40,9 +40,8 @@ def retrieveAccountDetails():
     args = request.args
     account_num = args.get("accountNumber") 
     response = userTable.get_item(Key={'associated_account' : str(account_num)})
-    ret = {"firstName" : response['firstName'], "lastName" : response['lastName'], "id" : response['ID']}
-
-    return ret
+    response2 = accountTable.get_item(Key={'account_number' : str(account_num)})
+    return str(response['Item']) + " " + str(response2['Item'])
 
 
 @app.route('/api/CustomerAccount/OpenCustomerAccount', methods=['POST'])
@@ -52,6 +51,7 @@ def openAccount():
     lastname = args.get("lastName") 
 
     accountID = int(random.randint(0, 10000))
+    print(accountID)
 
 
     accountTable.put_item(
@@ -70,7 +70,7 @@ def openAccount():
         'associated_account': str(accountID)    ,
     })
     accountID += 1
-    return "Added user"
+    return "Added user "
 
 
 @app.route('/api/CustomerAccount/CloseCustomerAccount', methods=['POST'])
